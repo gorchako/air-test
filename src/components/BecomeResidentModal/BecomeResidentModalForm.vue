@@ -1,11 +1,15 @@
 <script lang="ts" setup>
-import { reactive } from "vue";
+import { reactive, ref } from "vue";
 import { IBecomeResidentForm } from "@/components/BecomeResidentModal/BecomeResidentModalForm.types";
 import BaseInput from "@/components/Base/BaseInput.vue";
 import BaseSelect from "@/components/Base/BaseSelect.vue";
 import BaseInputRange from "@/components/Base/BaseInputRange.vue";
+import BaseButton from "@/components/Base/BaseButton.vue";
 import { PlacementType, SELECT_PLACEMENT_OPTIONS } from "@/components/BecomeResidentModal/BecomeResidentModalForm.constants";
 import DaDataAddress from "@/components/BecomeResidentModal/components/DaDataAddress.vue";
+import { callMockApi } from "@/utils/MockApi";
+
+const isLoading = ref(false)
 
 const form = reactive<IBecomeResidentForm>({
   companyName: '',
@@ -21,6 +25,12 @@ const form = reactive<IBecomeResidentForm>({
     to: '',
   },
 })
+
+async function onSubmitForm () {
+  isLoading.value = true
+  await callMockApi(3000);
+  isLoading.value = false
+}
 </script>
 
 <template>
@@ -52,7 +62,7 @@ const form = reactive<IBecomeResidentForm>({
           :placeholders="['от', 'до']"
       >
         <template #label>
-          Площадь помещения (м2)
+          Площадь помещения (м<sup>2</sup>)
         </template>
       </BaseInputRange>
 
@@ -66,6 +76,15 @@ const form = reactive<IBecomeResidentForm>({
           Дата начала аренды
         </template>
       </BaseInputRange>
+
+      <BaseButton
+          type="submit"
+          class="BecomeResidentModalForm__Submit"
+          @click="onSubmitForm"
+          :loading="isLoading"
+      >
+        Отправить
+      </BaseButton>
   </div>
 </template>
 
@@ -73,5 +92,9 @@ const form = reactive<IBecomeResidentForm>({
 .BecomeResidentModalForm {
   display: grid;
   gap: 20px;
+
+  &__Submit {
+    justify-self: center;
+  }
 }
 </style>
