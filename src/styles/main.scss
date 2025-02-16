@@ -1,0 +1,10 @@
+@import "normalize";
+@import "_variables";
+@import "_mixins";
+@import "_fonts";
+
+* {
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 300;
+  box-sizing: border-box;
+}
