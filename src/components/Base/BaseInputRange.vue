@@ -14,6 +14,7 @@ const props = defineProps<{
   modelValue: IRangeValue;
   isDate?: boolean;
   placeholders?: string[];
+  errors?: string[];
 }>()
 
 const dateMask = props.isDate && '##.##.####'
@@ -38,6 +39,7 @@ function onToFieldInput (value: string) {
           v-maska="dateMask"
           :modelValue="props.modelValue.from"
           :placeholder="placeholders[0] || ''"
+          :error="errors[0]"
           @update:modelValue="onFromFieldInput"
       />
 
@@ -45,6 +47,7 @@ function onToFieldInput (value: string) {
           v-maska="dateMask"
           :modelValue="props.modelValue.to"
           :placeholder="placeholders[1] || ''"
+          :error="errors[1]"
           @update:modelValue="onToFieldInput"
       />
     </div>

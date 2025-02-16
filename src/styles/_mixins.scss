@@ -28,3 +28,10 @@
   pointer-events: none;
   transition: top .1s linear;
 }
+
+@mixin input-error {
+  position: absolute;
+  top: 100%;
+  color: red;
+  font-size: 12px;
+}

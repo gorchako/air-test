@@ -9,7 +9,8 @@ const emit = defineEmits<{
 }>()
 
 const props = defineProps<{
-  mask?: string
+  mask?: string,
+  error?: string,
 }>()
 </script>
 
@@ -23,6 +24,7 @@ const props = defineProps<{
         @input="emit('update:modelValue', $event.target.value)"
     />
     <span class="BaseInput__Label">{{ $attrs.placeholder }}</span>
+    <span v-if="error" class="BaseInput__Error">{{ props.error }}</span>
   </div>
 </template>
 
@@ -50,6 +52,10 @@ const props = defineProps<{
 
   &__Label {
     @include input-label;
+  }
+
+  &__Error {
+    @include input-error;
   }
 }
 </style>

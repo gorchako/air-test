@@ -72,5 +72,9 @@ function onSelectSuggestion (suggestion: string) {
       border-radius: 0 0 6px 6px;
     }
   }
+
+  &__Error {
+    @include input-error;
+  }
 }
 </style>

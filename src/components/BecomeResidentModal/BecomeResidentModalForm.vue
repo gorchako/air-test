@@ -8,6 +8,8 @@ import BaseButton from "@/components/Base/BaseButton.vue";
 import { PlacementType, SELECT_PLACEMENT_OPTIONS } from "@/components/BecomeResidentModal/BecomeResidentModalForm.constants";
 import DaDataAddress from "@/components/BecomeResidentModal/components/DaDataAddress.vue";
 import { callMockApi } from "@/utils/MockApi";
+import { validationRules } from "@/components/BecomeResidentModal/BecomeResidentModalForm.validation";
+import { useVuelidate } from '@vuelidate/core'
 
 const isLoading = ref(false)
 
@@ -26,7 +28,12 @@ const form = reactive<IBecomeResidentForm>({
   },
 })
 
+const validator = useVuelidate(validationRules, form)
+
 async function onSubmitForm () {
+  validator.value.$touch()
+  const isValid = !validator.value.$invalid
+  if (!isValid) return
   isLoading.value = true
   await callMockApi(3000);
   isLoading.value = false
@@ -37,11 +44,13 @@ async function onSubmitForm () {
   <div class="BecomeResidentModalForm">
       <BaseInput
           v-model="form.companyName"
+          :error="validator.companyName.$errors[0]?.$message"
           placeholder="Наименование организации / ИП"
       />
 
       <BaseInput
           v-model="form.phone"
+          :error="validator.phone.$errors[0]?.$message"
           mask="+7 (###) ###-##-##"
           placeholder="Контактный телефон"
       />
@@ -54,12 +63,17 @@ async function onSubmitForm () {
 
       <DaDataAddress
           v-model="form.address"
+          :error="validator.address.$errors[0]?.$message"
           placeholder="Адрес"
       />
 
       <BaseInputRange
           v-model="form.placementArea"
           :placeholders="['от', 'до']"
+          :errors="[
+              validator.placementArea.from.$errors[0]?.$message,
+              validator.placementArea.to.$errors[0]?.$message
+          ]"
       >
         <template #label>
           Площадь помещения (м<sup>2</sup>)
@@ -68,8 +82,11 @@ async function onSubmitForm () {
 
       <BaseInputRange
           v-model="form.rentDate"
-          placeholder="Дата начала аренды"
           :placeholders="['с', 'по']"
+          :errors="[
+              validator.rentDate.from.$errors[0]?.$message,
+              validator.rentDate.to.$errors[0]?.$message
+          ]"
           is-date
       >
         <template #label>
