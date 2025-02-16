@@ -13,7 +13,7 @@ const emit = defineEmits<{
 const props = defineProps<{
   options: IOption[],
   modelValue: string | string[],
-  multiple: boolean,
+  multiple?: boolean,
 }>()
 
 const currentState = ref<string[]>([])
@@ -50,6 +50,7 @@ function onSelect (value: string) {
   } else {
     currentState.value.splice(0, currentState.value.length)
     currentState.value.push(value)
+    closeOptionsDropdown()
   }
 
   const emitValue = currentState.value.length > 1 ? currentState.value : currentState.value[0] || []

@@ -19,6 +19,7 @@ const props = defineProps<{
         class="BaseInput__Input"
         v-bind="$attrs"
         v-maska="props.mask"
+        :value="$attrs.modelValue"
         @input="emit('update:modelValue', $event.target.value)"
     />
     <span class="BaseInput__Label">{{ $attrs.placeholder }}</span>

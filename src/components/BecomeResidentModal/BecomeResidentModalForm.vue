@@ -5,12 +5,12 @@ import BaseInput from "@/components/Base/BaseInput.vue";
 import BaseSelect from "@/components/Base/BaseSelect.vue";
 import BaseInputRange from "@/components/Base/BaseInputRange.vue";
 import { PlacementType, SELECT_PLACEMENT_OPTIONS } from "@/components/BecomeResidentModal/BecomeResidentModalForm.constants";
+import DaDataAddress from "@/components/BecomeResidentModal/components/DaDataAddress.vue";
 
 const form = reactive<IBecomeResidentForm>({
   companyName: '',
   phone: '',
-  // placementType: PlacementType.Industrial,
-  placementType: [PlacementType.Industrial, PlacementType.Residential],
+  placementType: PlacementType.Industrial,
   address: '',
   placementArea: {
     from: '',
@@ -40,26 +40,32 @@ const form = reactive<IBecomeResidentForm>({
           v-model="form.placementType"
           placeholder="Тип помещения"
           :options="SELECT_PLACEMENT_OPTIONS"
-          :multiple="true"
       />
 
-      <BaseInput
+      <DaDataAddress
           v-model="form.address"
           placeholder="Адрес"
       />
 
       <BaseInputRange
           v-model="form.placementArea"
-          placeholder="Площадь помещения (м2)"
-          :labels="['от', 'до']"
-      />
+          :placeholders="['от', 'до']"
+      >
+        <template #label>
+          Площадь помещения (м2)
+        </template>
+      </BaseInputRange>
 
       <BaseInputRange
           v-model="form.rentDate"
           placeholder="Дата начала аренды"
-          :labels="['с', 'по']"
+          :placeholders="['с', 'по']"
           is-date
-      />
+      >
+        <template #label>
+          Дата начала аренды
+        </template>
+      </BaseInputRange>
   </div>
 </template>
 

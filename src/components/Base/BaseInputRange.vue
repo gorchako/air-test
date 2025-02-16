@@ -13,7 +13,7 @@ const emit = defineEmits<{
 const props = defineProps<{
   modelValue: IRangeValue;
   isDate?: boolean;
-  labels?: string[];
+  placeholders?: string[];
 }>()
 
 const dateMask = props.isDate && '##.##.####'
@@ -29,25 +29,38 @@ function onToFieldInput (value: string) {
 
 <template>
   <div class="BaseInputRange">
-    <BaseInput
-        v-maska="dateMask"
-        :modelValue="props.modelValue.from"
-        :placeholder="labels[0] || ''"
-        @update:modelValue="onFromFieldInput"
-    />
-    <BaseInput
-        v-maska="dateMask"
-        :modelValue="props.modelValue.to"
-        :placeholder="labels[1] || ''"
-        @update:modelValue="onToFieldInput"
-    />
+    <p class="BaseInputRange__Label">
+      <slot name="label" />
+    </p>
+
+    <div class="BaseInputRange__Form">
+      <BaseInput
+          v-maska="dateMask"
+          :modelValue="props.modelValue.from"
+          :placeholder="placeholders[0] || ''"
+          @update:modelValue="onFromFieldInput"
+      />
+
+      <BaseInput
+          v-maska="dateMask"
+          :modelValue="props.modelValue.to"
+          :placeholder="placeholders[1] || ''"
+          @update:modelValue="onToFieldInput"
+      />
+    </div>
   </div>
 </template>
 
 <style lang="scss">
 .BaseInputRange {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 8px;
+  &__Label {
+    color: $color-blue;
+  }
+
+  &__Form {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
 }
 </style>
